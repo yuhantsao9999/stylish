@@ -1,0 +1,68 @@
+ul {
+    margin: 0;
+    list-style-type: none;
+}
+
+#logo {
+    float: left;
+}
+
+#logo img {
+    width: 112px;
+    height: 100px;
+}
+
+body {
+    background-color: #f5f5f5;
+    margin: auto;
+}
+
+clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#nav {
+    float: right;
+    text-transform: uppercase;
+    line-height: 100px;
+    margin-right: 30px;
+}
+
+#nav li {
+    float: left;
+}
+
+#nav a {
+    text-decoration: none;
+    padding: 0 12px;
+    color: #333;
+    font-size: 13px;
+}
+
+.boundary:after {
+    content: "|";
+    padding: 0 12px;
+}
+
+.container {
+    /* 進行容器的置中 */
+    width: 20vw;
+    /* 進行置中(要想是容器的置中還是內容的置中) */
+    display: block;
+    /* 占據一整行 */
+    margin: 0 auto;
+    /* 要占據一整行但是寬不夠，所以自動補margin  0上下 auto是左右平分*/
+}
+
+#id_footer {
+    /* 設定footer的高度 */
+    height: 40px;
+    box-sizing: border-box;
+    /* 設定footer絕對位置在底部 */
+    position: absolute;
+    bottom: 0;
+    /* 展開footer寬度 */
+    width: 100%;
+}

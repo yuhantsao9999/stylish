@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>week1_part3</title>
+    <link rel="stylesheet" href="./product.css" />
+</head>
+
+<body>
+    <div id="header">
+        <div class="container clearfix" style="width:100vw; height: 100px;">
+            <div id="logo">
+                <img src="./logo.png" alt="logo">
+            </div>
+            <div id="nav">
+                <ul class="clearfix">
+                    <li>
+                        <a href="#">SGIN IN</a></li>
+                    <li class="boundary">
+                        <a href="#">SGIN OUT</a></li>
+                    <li>
+                        <a href="#">HELP</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <form action='/product' method='POST' enctype="multipart/form-data">
+            <p><b>ID:</b></p><input type='text' name='id' required>
+            <p><b>Title: </b></p><input type='text' name='title'>
+            <p><b>Description: </b></p><input type='text' name='description'>
+            <p><b>Price: </b></p><input type='text' name='price'>
+            <p><b>Texture: </b></p><input type='text' name='texture'>
+            <p><b>Wash:</b> </p><input type='text' name='wash'>
+            <p><b>Place: </b></p><input type='text' name='place'>
+            <p><b>Note: </b></p><input type='text' name='note'>
+            <p><b>Story:</b></p><input type='text' name='story'>
+            <p><b>Colors:</b></p><input type='text' name='colors_code'>
+            <input type='text' name='colors_name'>
+            <p><b>Sizes</b></p><input type='text' name='sizes_S'>
+            <input type='text' name='sizes_M'><input type='text' name='sizes_L'>
+            <p><b>Category</b></p><input type='text' name='category'>
+            <p><b>Variants:</b></p><input type='text' name='variants_color_code'>
+            <input type='text' name='variants_size'><input type='text' name='variants_stock'>
+            <p>
+                <b>
+                    main_image:
+                </b>
+            </p>
+            <input type='file' name='main_image'>
+            <p>
+                <b>
+                images:
+                </b>
+            </p>
+            <input type="file" name="images" multiple>
+            <p></p>
+            <input type='submit' value='Submit'>
+        </form>
+    </div>
+</body>
+
+</html>
