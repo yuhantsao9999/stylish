@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>sign up</title>
+    <link rel="stylesheet" href="./Campaigns.css" />
+</head>
+
+<body>
+    <div id="header">
+        <div class="container clearfix" style="width:100vw; height: 100px;">
+            <div id="logo">
+                <img src="./logo.png" alt="logo">
+            </div>
+            <div id="nav">
+                <ul class="clearfix">
+                    <li>
+                        <a href="#">SGIN IN</a></li>
+                    <li class="boundary">
+                        <a href="#">SGIN OUT</a></li>
+                    <li>
+                        <a href="#">HELP</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+
+        <form action='/user/signup' method='POST' enctype="application/json">
+            <b>sign up</b>
+            <p><b>Name:</b></p><input type='text' name='name' required>
+            <p>
+                <b>
+                Email:
+                </b>
+            </p>
+            <input type="email" name="email" required>
+            <p></p>
+            <p><b>Password: </b></p><input type="password" name='password' required>
+            <p></p>
+            <input type='submit' value='Submit'>
+        </form>
+    </div>
+</body>
+
+</html>

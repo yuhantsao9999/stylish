@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>profile</title>
+</head>
+
+<body>
+    <h3>click here</h3>
+    <button onclick="req()">SHOW PROFILE DATA</button>
+    <p id="json"></p>
+    <script>
+        function req() {
+            var js = document.getElementById('json')
+            var req = new XMLHttpRequest;
+            req.open('GET', '/user/profile', true);
+            req.setRequestHeader("Authorization", "Bearer 7752ebfece062cb5f74af41532841d20c7db40f30019962bcbed95fb4a599508");
+            req.send(null);
+            req.onreadystatechange = function() {
+                if (req.readyState == 4) {
+                    js.innerHTML = req.responseText
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
