@@ -2,6 +2,7 @@ var express = require("express");
 var mysql = require('mysql');
 var app = express();
 const router = express.Router();
+var request = require('request');
 var bodyParser = require('body-parser')
 const crypto = require('crypto');
 
@@ -49,18 +50,20 @@ router.post('/user/signup', function(req, res) {
     var test = {};
     var array = [];
     var hash = crypto.createHash('sha256');
-    hash.update(pwd + email);
+    //加密讓token會隨著時間而變
+    hash.update(pwd + Date.now() + 120000);
     var token = hash.digest('hex')
-    console.log(req.body.name)
-    console.log(token)
+        // console.log(token)
     var user = {
-        access_token: token,
-        access_expired: 3600,
-        provider: "native",
-        name: name,
-        email: email,
-        picture: "https://schoolvoyage.ga/images/123498.png",
-    }
+            access_token: token,
+            access_expired: Date.now() + 12000,
+            provider: "native",
+            name: name,
+            email: email,
+            picture: "https://schoolvoyage.ga/images/123498.png",
+        }
+        // console.log(user)
+        // console.log(user.access_expired)
     var sql = "INSERT INTO user SET ?"
     var sql2 = "SELECT * from user where email='" + email + "';"
     var sql3 = "SELECT email from user where email='" + email + "';"
@@ -93,26 +96,96 @@ router.post('/user/signin', function(req, res) {
     var test = {};
     var array = [];
     var hash = crypto.createHash('sha256');
-    hash.update(pwd + email);
+    hash.update(pwd + Date.now() + 12000);
     var token = hash.digest('hex')
     console.log(token)
-
+    var access_expired = Date.now() + 12000
+    var sql5 = "UPDATE user SET access_token='" + token + "', access_expired  ='" + access_expired + "' WHERE email='" + email + "';"
     var mysql4 = "SELECT * from user where email='" + email + "';"
-    con.query(mysql4, function(err, result4) {
+    con.query(sql5, function(err, result5) {
         if (err) throw err;
-        var sign_in = result4;
-        console.log(result4);
-        var access_token = sign_in[0].access_token
-        console.log(access_token);
-        console.log(token)
-        if (access_token == token) {
-            array.push({ id: sign_in[0].id, provider: sign_in[0].provider, name: sign_in[0].name, email: sign_in[0].email, pricture: sign_in[0].picture });
-            test['data'] = ({ access_token: sign_in[0].access_token, access_expired: sign_in[0].access_expired, user: array[0] });
-            res.json(test);
-        } else {
-            res.send('"error": "Invalid token."')
-        }
-    });
+        con.query(mysql4, function(err, result4) {
+            if (err) throw err;
+            var sign_in = result4;
+            console.log(result4);
+            var access_token = sign_in[0].access_token
+            console.log(access_token);
+            console.log(token)
+            if (access_token == token) {
+                array.push({ id: sign_in[0].id, provider: sign_in[0].provider, name: sign_in[0].name, email: sign_in[0].email, pricture: sign_in[0].picture });
+                test['data'] = ({ access_token: sign_in[0].access_token, access_expired: sign_in[0].access_expired, user: array[0] });
+                res.json(test);
+            } else {
+                res.send('"error": "Invalid token."')
+            }
+        });
+    })
+});
+
+// 向 FB 要求使用者名稱和ID
+router.post('/user/login', function(req, res) {
+    var token = req.body.fb_token;
+    console.log(token)
+    request('https://graph.facebook.com/v3.3/me?&fields=name,email&access_token=' + token, (error, response, body) => {
+        var profile = JSON.parse(body);
+        console.log(profile)
+        var name = profile.name;
+        var email = profile.email
+        console.log(name)
+        var test = {};
+        var array = [];
+        var hash = crypto.createHash('sha256');
+        hash.update(profile + email + Date.now() + 12000);
+        var mixtoken = hash.digest('hex')
+        console.log(mixtoken)
+        var fb_user = {
+            access_token: mixtoken, //更換會隨著時間變動的新token
+            access_expired: Date.now() + 12000,
+            provider: "facebook",
+            name: name,
+            email: email,
+            picture: "https://schoolvoyage.ga/images/123498.png"
+        };
+        var access_expired = Date.now() + 12000
+        var fb_insert = "INSERT INTO user SET ?";
+        var fb_update = "UPDATE user SET access_token='" + mixtoken + "', access_expired  ='" + access_expired + "' WHERE email='" + email + "';"
+        var fb_repeat = "SELECT email from user where provider='facebook' and email='" + email + "';"
+        var fb_select = "SELECT * from user where provider='facebook' and name='" + name + "';"
+        con.query(fb_repeat, function(err, fb_repeat_result) {
+            if (err) throw err;
+            //若mysql內有沒有這筆臉書的emil資料，沒有則存取資料
+            if (String(fb_repeat_result).length == 0) {
+                con.query(fb_insert, fb_user, function(err, fb_result) {
+                    if (err) throw err;
+                    // 存取後再顯示資料
+                    con.query(fb_select, function(err, fb_result2) {
+                        if (err) throw err;
+                        // console.log(fb_result2)
+                        var user = fb_result2
+                        array.push({ id: user[0].id, provider: user[0].provider, name: user[0].name, email: user[0].email, pricture: user[0].picture });
+                        test['data'] = ({ access_token: user[0].access_token, access_expired: user[0].access_expired, user: array[0] });
+                        // console.log(test)
+                        res.json(test);
+                    })
+                })
+            } else { //若mysql內有這筆臉書的emil資料，則update資料並直接顯示資料
+                con.query(fb_update, fb_user, function(err, fb_update) {
+                    if (err) throw err;
+                    con.query(fb_select, function(err, fb_result2) {
+                        if (err) throw err;
+                        console.log(fb_result2)
+                        var user = fb_result2
+                        array.push({ id: user[0].id, provider: user[0].provider, name: user[0].name, email: user[0].email, pricture: user[0].picture });
+                        test['data'] = ({ access_token: user[0].access_token, access_expired: user[0].access_expired, user: array[0] });
+                        // console.log(test)
+                        res.json(test);
+                    })
+                })
+            }
+        })
+
+    })
+
 });
 
 //User Profile APIs
