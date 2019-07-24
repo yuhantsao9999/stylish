@@ -30,6 +30,10 @@ app.use('/', Campaigns);
 const sign = require('./routes/sign_api');
 app.use('/', sign);
 
+// 使用router資料夾下的checkout
+const checkout = require('./routes/checkout');
+app.use('/', checkout);
+
 
 app.get('/', (req, res) => {
     res.send('HEY!')
