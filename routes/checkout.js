@@ -69,7 +69,7 @@ router.post('/order/checkout', function(req, res) {
         } else { //有token是會員，提取會員email，將產品資訊存到list，
             con.query(sql, response, function(err, result) {
                 if (err) throw err;
-                res.send('"error": "Invalid token."')
+                // res.send('"error": "Invalid token."')
                 var sql_request = "SELECT * from list"
                 con.query(sql_request, function(err, request_result) {
                     console.log(request_result)
@@ -106,8 +106,17 @@ router.post('/order/checkout', function(req, res) {
                         if (body.status == 0) {
                             console.log("suc")
                             var change_sql = "UPDATE list SET status='pay' WHERE prime='" + prime + "';"
+                            var id_sql = "SELECT id FROM list WHERE prime='" + prime + "';"
                             con.query(change_sql, function(err, change_result) {
                                 if (err) throw err;
+                                con.query(id_sql, function(err, id_result) {
+                                    if (err) throw err;
+                                    var data = { data: { number: id_result } };
+                                    res.send(data);
+                                    // console.log(data)
+
+                                })
+
                             })
                         } else {
                             console.log("Err : " + body.msg)
