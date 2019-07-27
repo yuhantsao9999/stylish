@@ -63,12 +63,15 @@ router.post('/marketing/campaigns', upload.array('files'), function(req, res, ne
     //     }
     console.log(path);
     // };
+
     //插入資料進myssql
     var mysql = "INSERT INTO campaign (product_id,picture,story) Values('" + ID + "','" + path + "','" + Story + "');";
     con.query(mysql, function(err, result) {
         if (err) throw err
         console.log('successful1')
+
         res.send('successful');
+
     });
 
 });

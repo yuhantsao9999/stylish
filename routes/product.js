@@ -65,29 +65,20 @@ router.post('/product', mixupload, function(req, res, next) {
     var Variants_stock = req.body.variants_stock;
     // var Variants = "{\"color_code\":" + Variants_color_code + ",\"size\":" + Variants_size + ",\"stock\":" + Variants_stock + "}";
     var Category = req.body.category;
-    const file = req.files;
-    const path = "\"" + file["main_image"][0].path + "\"";
+    var main_img_name = req.files.main_image[0].filename;
+    var images_name = []
+    for (let i = 0; i < req.files.images.length; i++) {
+        images_name.push(req.files.images[i].filename);
+        console.log(req.files.images[i].filename)
+    }
+    // console.log(req.files.main_image[0].filename)
 
-    var paths = "";
 
-    for (var i = 0; i < file["images"].length; i++) {
-        paths += "\"" + file["images"][i].path + "\"";
-        if (i != file["images"].length - 1) {
-            paths += ",";
-        }
-    };
-    console.log(paths);
-    // const paths = req.file.main_image.path;
-    // if (!req.files) {
-    //     const error = new Error('Please upload a file')
-    //     error.httpStatusCode = 400
-    //     return next(error)
-    // }
     res.send('successful');
     console.log("this is ID:" + ID);
     console.log("this is ID:" + Category);
-    //插入資料進myssql
-    var mysql = "INSERT INTO product (ID,Title,Description,Price,Texture,Wash,Place,Note,Story,Sizes,main_image,images,category) Values('" + ID + "','" + Title + "','" + Description + "','" + Price + "','" + Texture + "','" + Wash + "','" + Place + "','" + Note + "','" + Story + "','" + Sizes + "','" + path + "','" + paths + "','" + Category + "')";
+    // 插入資料進myssql
+    var mysql = "INSERT INTO product (ID,Title,Description,Price,Texture,Wash,Place,Note,Story,Sizes,main_image,images,category) Values('" + ID + "','" + Title + "','" + Description + "','" + Price + "','" + Texture + "','" + Wash + "','" + Place + "','" + Note + "','" + Story + "','" + Sizes + "','" + main_img_name + "','" + images_name + "','" + Category + "')";
     var mysql2 = "INSERT INTO colortest (ID,code,name) Values('" + ID + "','" + Colors_code + "','" + Colors_name + "')";
     var mysql3 = "INSERT INTO variant (ID,color_code,size,stock) Values('" + ID + "','" + Variants_color_code + "','" + Variants_size + "','" + Variants_stock + "' )";
     con.query(mysql, function(err, result) {

@@ -1,3 +1,4 @@
+
 var express = require("express");
 var mysql = require("mysql");
 const router = express.Router();
@@ -73,4 +74,5 @@ router.get("/api/1.0/products/details", function(req, res) {
 
     });
 });
+
 module.exports = router;
