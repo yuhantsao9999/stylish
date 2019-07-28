@@ -33,14 +33,13 @@
                         </i></div>
                 </div>
                 <div class="cart">
-                    <a href="#"><img src="/img/cart.png" class="cart"></a>
+                    <a href="#"><img src="./img/cart.png" class="cart"></a>
                 </div>
                 <div class="member">
-                    <a href="#"><img src="/img/member.png" class="member"></a>
+                    <a href="#"><img src="./img/member.png" class="member"></a>
                 </div>
             </div>
         </div>
-    </div>
     </div>
     <div class="content">
         <div class="event">
@@ -60,7 +59,9 @@
             <section class=row-3>
                 <div class="tmp">
                     <li class="row-item">
-                        <div class="picture"></div>
+                        <div class="picture">
+
+                        </div>
                         <div class="color">
                             <div class="rectangle-3" id=color_1></div>
                         </div>
@@ -171,11 +172,21 @@
                     var priceContent = document.createTextNode("TWD." + obj.Data[i].price);
                     priceDiv.appendChild(priceContent);
                     document.getElementsByClassName("row-item-price")[i].appendChild(priceDiv);
-                    //替換圖片
+
+
+                    //建立一個a進行分頁連結
+                    var img_a = document.createElement("a");
+                    img_a.href = ("/product.html?id=" + obj.Data[i].id);
+                    console.log(img_a.href)
+
+
+
+                    //將圖片與連結加入picture
                     var main_imageDiv = document.createElement("img");
                     main_imageDiv.src = ("./porfuct_list_uploads/" + obj.Data[i].main_image);
                     console.log(main_imageDiv.src)
-                    document.getElementsByClassName("picture")[i].appendChild(main_imageDiv)
+                    img_a.appendChild(main_imageDiv);
+                    document.getElementsByClassName("picture")[i].appendChild(img_a);
 
                     //替換顏色
                     let status = document.getElementsByClassName("rectangle-3")

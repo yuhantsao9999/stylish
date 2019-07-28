@@ -2,11 +2,17 @@
 <html lang="en">
 
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>remote-assignments</title>
+    <title>product_id_page</title>
     <link rel="stylesheet" href="./css/product.css" />
+    <script src="./src/bootstrap-input-spinner.js"></script>
+
 </head>
 
 <body>
@@ -27,14 +33,19 @@
             </div>
             <div id="nav2">
                 <div class="search">
-                    <input type="text" placeholder="Search items" id="search_bar">
-                    <a href="#"><img src="/img/search.png" id="search_btn"></a>
+                    <div class="search_i">
+                        <img src="./img/search.png" alt="search">
+                        <i class="a-icon a-icon-search">
+                        </i></div>
                 </div>
-                <img src="./img/cart.png" alt="cart" class=cart>
-                <img src="./img/member.png" alt="member" class="member">
+                <div class="cart">
+                    <a href="#"><img src="./img/cart.png" class="cart"></a>
+                </div>
+                <div class="member">
+                    <a href="#"><img src="./img/member.png" class="member"></a>
+                </div>
             </div>
         </div>
-    </div>
     </div>
     <div class="content">
 
@@ -47,22 +58,41 @@
         </div>
         <div class="container">
             <div class="introduction">
-                <img class="main_image" src="./clothing-photos/201807201824/main.jpg" alt="">
+                <img class="main_image" src="" alt="">
                 <div class="detail">
-                    <div>title</div>
-                    <div>id</div>
-                    <div>price</div>
+                    <div id="title"></div>
+                    <div id="id"></div>
+                    <div id=price></div>
                     <div class="blackline"></div>
-                    <div>顏色 |</div>
-                    <div>尺寸 |</div>
-                    <div>數量 |</div>
-                    <button type="button">加入購物車</button>
-                    <div>實品顏色依單品照為主</div>
-                    <div>texture</div>
-                    <div>厚薄:薄</div>
-                    <div>彈性:無</div>
-                    <div>清洗:</div>
-                    <div>產地:</div>
+                    <div id="color">顏色 |
+                        <div class="color_item">
+                        </div>
+                    </div>
+                    <div id="size">尺寸 |
+                        <!-- <div class="size_item_1">哈</div> -->
+                        <!-- <div class="size_item_2">
+                            <div class="size_word_2"></div>
+                        </div> -->
+                    </div>
+                    <div id="stock">數
+                        <!-- <div class="square"> -->
+                        <div>量</div>
+                        <div class="space">|</div>
+                        <input class="Bootstrap" type="number" value="1" min="1" max="5" step="1" />
+                        <!-- <div class="negative">-</div> -->
+                        <!-- <div classs="positive">+</div> -->
+                        <!-- </div> -->
+                    </div>
+
+                    <button type="button" class="add_cart">加入購物車</button>
+                    <div class="more_detail">
+                        <div>實品顏色依單品照為主</div>
+                        <div id="texture"></div>
+                        <div>厚薄:薄</div>
+                        <div>彈性:無</div>
+                        <div id="wash">清洗:</div>
+                        <div id="place">產地:</div>
+                    </div>
                 </div>
             </div>
             <div class="more_info">
@@ -71,16 +101,12 @@
                 <div class="blackline2"></div>
             </div>
             <div class="container">
-                <div>O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.</div>
+                <div id="text">O.N.S is all about options, which is why we took our staple polo shirt and upgraded it with slubby linen jersey, making it even lighter for those who prefer their summer style extra-breezy.</div>
+                <img id="picture_2" src="" alt="">
+                <img id="picture_3" src="" alt="">
             </div>
 
         </div>
-
-
-
-
-
-
 
         <footer id=id_footer>
             <div id="foot_nav">
@@ -105,7 +131,112 @@
         </footer>
 
 </body>
+
 <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    console.log(id)
+    var xmlhttp2 = new XMLHttpRequest();
+    xmlhttp2.open("get", "/api/1.0/products/details?id=" + id, true)
+    xmlhttp2.send(null);
+    xmlhttp2.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var obj_id = JSON.parse(xmlhttp2.responseText)
+                //取title
+            var titleDiv = document.createElement("div");
+            var titleContent = document.createTextNode(obj_id.Data[0].title);
+            titleDiv.appendChild(titleContent);
+            document.getElementById("title").appendChild(titleDiv)
+
+
+            //取id
+            var IDDiv = document.createElement("div");
+            var IDContent = document.createTextNode(obj_id.Data[0].id);
+            IDDiv.appendChild(IDContent);
+            document.getElementById("id").appendChild(IDDiv);
+
+            //取price
+            var priceDiv = document.createElement("div");
+            var priceContent = document.createTextNode("TWD." + obj_id.Data[0].price);
+            priceDiv.appendChild(priceContent);
+            document.getElementById("price").appendChild(priceDiv);
+
+            //顏色
+            // var colorDiv = document.createElement("div");
+            var color_backgroundColor = ("#" + obj_id.Data[0].colors[0].code);
+            // var colorContent = ("#" + obj_id.Data[0].colors[0].code);
+            console.log(color_backgroundColor);
+            // colorDiv.style.backgroundColor = (colorContent);
+            document.getElementsByClassName("color_item")[0].style.backgroundColor = (color_backgroundColor);
+
+            //尺寸
+            // var sizeDiv = document.createElement("div");
+            var size_split = obj_id.Data[0].sizes
+                // console.log("gg" + obj_id.Data[0].sizes)
+            for (var i = 0; i < size_split.length; i++) {
+                var sizeDiv = document.createElement("div");
+
+                var sizeContent = document.createTextNode(size_split[i]);
+                console.log(size_split[i])
+                sizeDiv.className = "size_item_1"
+                    // console.log(sizeContent[1])
+                    // console.log(sizeContent)
+                sizeDiv.appendChild(sizeContent)
+                    // console.log(sizeDiv)
+                document.getElementById("size").appendChild(sizeDiv);
+            }
+
+
+
+            // var sizeDiv_2 = document.createElement("div");
+            // var sizeContent_2 = document.createTextNode(size_split[1]);
+            // sizeDiv_1.appendChild(sizeContent_2);
+            // document.getElementsByClassName("size_word_2")[0].appendChild(sizeDiv_2);
+
+            //texture
+            var textureDiv = document.createElement("div");
+            var textureContent = document.createTextNode(obj_id.Data[0].texture);
+            textureDiv.appendChild(textureContent);
+            document.getElementById("texture").appendChild(textureDiv);
+
+            //wash
+            var washDiv = document.createElement("div");
+            var washContent = document.createTextNode(obj_id.Data[0].wash);
+            washDiv.appendChild(washContent);
+            document.getElementById("wash").appendChild(washDiv);
+
+            //place
+            var placeDiv = document.createElement("div");
+            var placeContent = document.createTextNode(obj_id.Data[0].place);
+            placeDiv.appendChild(placeContent);
+            document.getElementById("place").appendChild(placeDiv);
+
+            //main_image
+            var main_image_src = ("./porfuct_list_uploads/" + obj_id.Data[0].main_image);
+            document.getElementsByClassName("main_image")[0].src = (main_image_src);
+
+            //images
+            var images = obj_id.Data[0].images.split(",")
+            images_src_2 = ("./porfuct_list_uploads/" + images[0]);
+            images_src_3 = ("./porfuct_list_uploads/" + images[1]);
+            document.getElementById("picture_2").src = (images_src_2);
+            document.getElementById("picture_3").src = (images_src_3);
+
+
+
+
+
+
+
+            // let colorDiv = document.createElement("div");
+            // //幫新增的div賦予一個classname
+            // colorDiv.className = "rectangle-4"
+            // colorDiv.style.backgroundColor = ("#" + obj.Data[i].colors[j].code);
+            // status[i].appendChild(colorDiv)
+            // console.log("i : " + i + " " + colorDiv.style.backgroundColor)
+        }
+    }
+    $("input[type='number']").inputSpinner()
 </script>
 
 </html>

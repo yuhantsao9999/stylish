@@ -1,4 +1,3 @@
-
 var express = require("express");
 var mysql = require("mysql");
 const router = express.Router();
