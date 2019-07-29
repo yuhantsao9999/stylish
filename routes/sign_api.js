@@ -42,7 +42,7 @@ con.connect(function(err) {
     console.log("Mysql Connect user");
 })
 
-//signup API
+//signup API/user/signup
 router.post('/user/signup', function(req, res) {
     var name = req.body.name;
     var email = req.body.email;
@@ -88,27 +88,29 @@ router.post('/user/signup', function(req, res) {
     });
 });
 
-//signin API
+//signin API/user/signin
 router.post('/user/signin', function(req, res) {
-    if (req.body.provider = "native") {
+    if (req.body.provider == "native") {
+        console.log("NATIVE~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         var name = req.body.name;
         var email = req.body.email;
         var pwd = req.body.password;
+        console.log(name + " " + email + " " + pwd)
         var test = {};
         var array = [];
         var hash = crypto.createHash('sha256');
         hash.update(pwd + Date.now() + 12000);
         var token = hash.digest('hex')
-        console.log(token)
+        console.log("this is token " + token)
         var access_expired = Date.now() + 12000
-        var sql5 = "UPDATE user SET access_token='" + token + "', access_expired  ='" + access_expired + "' WHERE email='" + email + "and where provider='facebook'';"
+        var sql5 = "UPDATE user SET access_token='" + token + "', access_expired  ='" + access_expired + "' WHERE email='" + email + "' and provider='native';"
         var mysql4 = "SELECT * from user where email='" + email + "';"
         con.query(sql5, function(err, result5) {
             if (err) throw err;
             con.query(mysql4, function(err, result4) {
                 if (err) throw err;
                 var sign_in = result4;
-                console.log(result4);
+                console.log("this is email " + sign_in[0]);
                 var access_token = sign_in[0].access_token
                 console.log(access_token);
                 console.log(token)
@@ -122,6 +124,7 @@ router.post('/user/signin', function(req, res) {
             });
         })
     } else {
+
         // 向 FB 要求使用者名稱和ID
         var token = req.body.fb_token;
         console.log(token)
