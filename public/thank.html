@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>profile</title>
-    <link rel="stylesheet" href="./css/profile.css" />
+    <title>remote-assignments</title>
+    <link rel="stylesheet" href="./css/thank.css" />
 </head>
 
 <body>
@@ -25,29 +25,32 @@
                         <a href="#">配件</a></li>
                 </ul>
             </div>
+
             <div id="nav2">
                 <div class="search">
                     <div class="search_i">
                         <img src="./img/search.png" alt="search">
                         <i class="a-icon a-icon-search">
-                                </i></div>
+                        </i></div>
                 </div>
                 <div class="cart">
-                    <a href="#"><img src="./img/cart-hover.png" alt=""><img src="./img/cart.png" alt=""></a>
+                    <a href="#"><img src="./img/cart.png" class="cart"></a>
                 </div>
-                <div id="member" class="member" onclick="req()">
-                    <a href="#"><img src="./img/member-hover.png" alt="">
-                        <img src="./img/member.png"></a>
+                <div class="member">
+                    <a href="#"><img src="./img/member.png" class="member"></a>
                 </div>
             </div>
         </div>
     </div>
+
     <div class=black></div>
 
-    <!-- 
-    <h3>click here</h3>
-    <button onclick="req()">SHOW PROFILE DATA</button> -->
-    <div id="content">profile</div>
+
+    <div class="container">
+        <div id="word">感謝訂購 : )
+        </div>
+    </div>
+
 
     <footer id=id_footer>
         <div id="foot_nav">
@@ -70,35 +73,17 @@
 
         </div>
     </footer>
-
-
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        const accessToken = urlParams.get('accessToken');
-        console.log("accessToken" + accessToken)
-        var js = document.getElementById('content')
-        var req = new XMLHttpRequest;
-        req.open('GET', '/user/profile', true);
-        req.setRequestHeader("Authorization", "Bearer" + " " + accessToken);
-        req.send(null);
-        req.onreadystatechange = function() {
-            if (req.readyState == 4) {
-                var profileDiv = document.createElement("div");
-                var profileContent = document.createTextNode("name:" + JSON.parse(req.responseText).data.name + "   " + "email:" + JSON.parse(req.responseText).data.email);
-                profileDiv.appendChild(profileContent);
-                document.getElementById("content").appendChild(profileDiv);
-
-
-
-
-
-
-
-            }
-        }
-
-        // }
+        const id = urlParams.get('id');
+        console.log(id)
+        var wordDiv = document.createElement("div");
+        var wordContent = document.createTextNode("訂購成功!訂單標號:" + id);
+        wordDiv.appendChild(wordContent);
+        console.log(wordDiv)
+        document.getElementById("word").appendChild(wordDiv)
     </script>
 </body>
 
-</html
+
+</html>

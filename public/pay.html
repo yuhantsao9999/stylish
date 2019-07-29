@@ -11,18 +11,16 @@
         body {
             margin: 20px 0;
         }
-        
-        .jumbotron {
+        /* .jumbotron {
             text-align: center;
-        }
+        } */
         
         .text-left {
             text-align: left;
         }
-        
-        .container {
+        /* .container {
             max-width: 750px;
-        }
+        } */
         
         form {
             padding: 40px;
@@ -52,10 +50,10 @@
 
 <body>
     <div class="container">
-        <div class="jumbotron">
+        <!-- <div class="jumbotron">
             <h1>TapPay Fields Bootstrap Example</h1>
             <p class="lead">TapPay Fields 是 三個 host 在 TapPay 的網頁，利用 iframe 的方式嵌入商家網頁，提供安全的卡號輸入方式</p>
-        </div>
+        </div> -->
         <form>
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
@@ -248,11 +246,8 @@
                     }
                 }'`.replace(/                /g, '')
 
-                // document.getElementById("prime").value = result.card.prime;
-                // xmlhttp.send(result.card.prime);
-                document.querySelector('#curl').innerHTML = command
-                    // xmlhttp.open("POST", "/order/checkout", false);
 
+                document.querySelector('#curl').innerHTML = command
             })
         })
 
