@@ -208,15 +208,15 @@
                 if (this.readyState == 4 && this.status == 200) {
                     //story
                     var obj = JSON.parse(xmlhttp2.responseText)
-                    console.log(obj.data[0])
+
                     var storyDiv = document.createElement("div");
-                    var storyContent = document.createTextNode(obj.data[0].story);
+                    var storyContent = document.createTextNode(obj[0].story);
                     storyDiv.appendChild(storyContent);
                     document.getElementsByClassName("subtitle")[0].appendChild(storyDiv);
 
                     //event
-                    console.log(obj.data[0])
-                    var CampaignsContent = (obj.data[0].picture);
+
+                    var CampaignsContent = (obj[0].picture);
                     console.log("picture_path" + " " + CampaignsContent)
                     document.getElementsByClassName("event")[0].style.backgroundImage = "url(./Campaigns/" + CampaignsContent + ")";
                 }
