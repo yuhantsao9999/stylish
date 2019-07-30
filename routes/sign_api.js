@@ -42,7 +42,7 @@ con.connect(function(err) {
     console.log("Mysql Connect user");
 })
 
-//signup API/user/signup
+//signup API
 router.post('/user/signup', function(req, res) {
     var name = req.body.name;
     var email = req.body.email;

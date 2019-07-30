@@ -3,6 +3,8 @@ var mysql = require('mysql');
 var multer = require('multer');
 const router = express.Router();
 var app = express();
+// const NodeCache = require("node-cache");
+// const Cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 
 // 從根目錄使用router
 app.use('/', router);
