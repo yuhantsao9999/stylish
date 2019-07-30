@@ -60,11 +60,9 @@ router.get("/api/1.0/products/details", function(req, res) {
                             test['Data'] = array;
                             // res.json(test);
 
-
-                            obj = { chade: test };
-                            console.log("this is cache" + JSON.stringify(obj));
+                            console.log("this is cache" + JSON.stringify(test));
                             // res.json(obj);
-                            Cache.set(`"detail${details}"`, obj, function(err, success) {
+                            Cache.set(`"detail${details}"`, test, function(err, success) {
                                 if (!err && success) {
                                     console.log("final" + "" + success);
                                     // true
@@ -74,7 +72,7 @@ router.get("/api/1.0/products/details", function(req, res) {
                                         // ... do something ...
                                 }
                             });
-                            res.json(obj);
+                            res.json(test);
                         })
                     })
 

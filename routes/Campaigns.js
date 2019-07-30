@@ -80,15 +80,15 @@ router.get("/api/1.0/marketing/campaigns", function(req, res) {
                     // res.json(campaigns);
 
                     // key not found
-                    obj = { chade: campaigns }
-                    Cache.set("campaigns", obj, function(err, success) {
+                    // obj = { data: campaigns }
+                    Cache.set("campaigns", campaigns, function(err, success) {
                         if (!err && success) {
                             console.log(success);
                             // true
                             // ... do something ...
                         }
                     })
-                    res.json(obj);
+                    res.json(campaigns);
                 });
             } else {
                 console.log(value);
