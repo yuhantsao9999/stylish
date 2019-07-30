@@ -398,6 +398,8 @@
     xmlhttp2.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             var obj_id = JSON.parse(xmlhttp2.responseText)
+            console.log(obj_id)
+                // console.log(obj_id.chad)
                 //取title
             var titleDiv = document.createElement("div");
             var titleContent = document.createTextNode(obj_id.Data[0].title);
