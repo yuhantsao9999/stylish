@@ -3,8 +3,8 @@ var mysql = require('mysql');
 var multer = require('multer');
 const router = express.Router();
 var app = express();
-// const NodeCache = require("node-cache");
-// const Cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
+const NodeCache = require("node-cache");
+const Cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 
 // 從根目錄使用router
 app.use('/', router);
@@ -54,38 +54,51 @@ router.post('/marketing/campaigns', upload.array('files'), function(req, res, ne
         error.httpStatusCode = 400
         return next(error)
     }
-    const path = "\"" + file[0].path + "\"";
-    console.log(ID);
-    console.log(Story);
-    // var paths = "";
-    // for (var i = 0; i < file.length; i++) {
-    //     paths += "\"" + file[i].path + "\"";
-    //     if (i != file["files"].length - 1) {
-    //         paths += ",";
-    //     }
-    console.log(path);
-    // };
-
-    //插入資料進myssql
-    var mysql = "INSERT INTO campaign (product_id,picture,story) Values('" + ID + "','" + path + "','" + Story + "');";
+    console.log(req.files)
+        // const path = "\"" + file[0].path + "\"";
+    var campaign_picture = req.files[0].filename;
+    console.log(campaign_picture)
+        //插入資料進myssql
+    var mysql = "INSERT INTO campaign (product_id,picture,story) Values('" + ID + "','" + campaign_picture + "','" + Story + "');";
     con.query(mysql, function(err, result) {
         if (err) throw err
         console.log('successful1')
-
         res.send('successful');
-
     });
 
 });
 
 //從mysql獲取campaign資料
 router.get("/api/1.0/marketing/campaigns", function(req, res) {
-    var mysql_campaigns = "SELECT * from campaign"
-    con.query(mysql_campaigns, function(err, result) {
-        if (err) throw err
-        var campaigns = result;
-        res.json(campaigns);
-    })
+    Cache.get("campaigns", function(err, value) {
+        if (!err) {
+            if (value == undefined) {
+                var mysql_campaigns = "SELECT * from campaign"
+                con.query(mysql_campaigns, function(err, result) {
+                    if (err) throw err
+                    var campaigns = result;
+                    // res.json(campaigns);
+
+                    // key not found
+                    obj = { chade: campaigns }
+                    Cache.set("campaigns", obj, function(err, success) {
+                        if (!err && success) {
+                            console.log(success);
+                            // true
+                            // ... do something ...
+                        }
+                    })
+                    res.json(obj);
+                });
+            } else {
+                console.log(value);
+                res.json(value)
+                    //{ my: "Special", variable: 42 }
+                    // ... do something ...
+            }
+        }
+    });
+
 });
 
 module.exports = router;
