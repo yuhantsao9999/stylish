@@ -13,7 +13,7 @@
     <div id="header">
         <div class="container clearfix" style="width:100vw; height: 100px;">
             <div id="logo">
-                <img src="./img/logo.png" alt="logo">
+                <a href="./index.html"> <img src="./img/logo.png" alt="logo"></a>
             </div>
             <div id="nav">
                 <ul class="clearfix">
@@ -36,7 +36,7 @@
                     <a href="#"><img src="./img/cart-hover.png" alt=""><img src="./img/cart.png" alt=""></a>
                 </div>
                 <div id="member" class="member" onclick="req()">
-                    <a href="#"><img src="./img/member-hover.png" alt="">
+                    <a href="./profile.html"><img src="./img/member-hover.png" alt="">
                         <img src="./img/member.png"></a>
                 </div>
             </div>
@@ -86,9 +86,6 @@
                 var profileContent = document.createTextNode("name:" + JSON.parse(req.responseText).data.name + "   " + "email:" + JSON.parse(req.responseText).data.email);
                 profileDiv.appendChild(profileContent);
                 document.getElementById("content").appendChild(profileDiv);
-
-
-
 
             }
         }

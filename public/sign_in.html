@@ -13,7 +13,7 @@
     <div id="header">
         <div class="container clearfix" style="width:100vw; height: 100px;">
             <div id="logo">
-                <img src="./img/logo.png" alt="logo">
+                <a href="./index.html"> <img src="./img/logo.png" alt="logo"></a>
             </div>
             <div id="nav">
                 <ul class="clearfix">
@@ -36,7 +36,7 @@
                     <a href="#"><img src="./img/cart-hover.png" alt=""><img src="./img/cart.png" alt=""></a>
                 </div>
                 <div class="member">
-                    <a href="#"><img src="./img/member-hover.png" alt="">
+                    <a href="./sign_in.html"><img src="./img/member-hover.png" alt="">
                         <img src="./img/member.png"></a>
                 </div>
             </div>
@@ -58,7 +58,7 @@
         <p><b>Password: </b></p><input type="password" name='password' id="password" required>
         <p></p>
         <input type='submit' value='Submit' id="sumbit">
-
+        <p>Do not have an account? Please <a href="./sign_up.html">sign up</a> .</p>
 
         <div class="container">
             <p></p>
@@ -94,6 +94,7 @@
                 var accessToken = JSON.parse(xml.responseText).data.access_token;
                 console.log(accessToken);
                 localStorage.setItem("accessToken", accessToken);
+                alert("sign in successful")
                 window.location.assign('./profile.html')
             }
         });

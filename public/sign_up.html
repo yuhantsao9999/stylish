@@ -13,7 +13,7 @@
     <div id="header">
         <div class="container clearfix" style="width:100vw; height: 100px;">
             <div id="logo">
-                <img src="./img/logo.png" alt="logo">
+                <a href="./index.html"> <img src="./img/logo.png" alt="logo"></a>
             </div>
             <div id="nav">
                 <ul class="clearfix">
@@ -36,7 +36,7 @@
                     <a href="#"><img src="./img/cart-hover.png" alt=""><img src="./img/cart.png" alt=""></a>
                 </div>
                 <div class="member">
-                    <a href="#"><img src="./img/member-hover.png" alt="">
+                    <a href="./sign_in.html"><img src="./img/member-hover.png" alt="">
                         <img src="./img/member.png"></a>
                 </div>
             </div>
@@ -44,23 +44,46 @@
     </div>
     <div class=black></div>
     <div class="content">
-        <form action='/user/signup' method='POST' enctype="application/json">
-            <b>sign up</b>
-            <p><b>Name:</b></p><input type='text' name='name' required>
-            <p>
-                <b>
+
+        <b>sign up</b>
+        <p><b>Name:</b></p><input type='text' name='name' id='name' required>
+        <p>
+            <b>
                     Email:
                     </b>
-            </p>
-            <input type="email" name="email" required>
-            <p></p>
-            <p><b>Password: </b></p><input type="password" name='password' required>
-            <p></p>
-            <input type='submit' value='Submit'>
-        </form>
+        </p>
+        <input type="email" name="email" id='email' required>
+        <p></p>
+        <p><b>Password: </b></p><input type="password" name='password' id='password' required>
+        <p></p>
+        <input type='submit' value='Submit' id="sumbit">
 
     </div>
     <script>
+        document.getElementById("sumbit").addEventListener("click", function() {
+            var xml = new XMLHttpRequest;
+            xml.open('post', '/user/signup', true);
+            xml.setRequestHeader('content-type', 'application/json')
+            var name = document.getElementById("name").value;
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+            console.log("this is" + name, email, password)
+            var profile = {
+                    provider: "native",
+                    name: name,
+                    email: email,
+                    password: password
+                }
+                // console.log(profile)
+            xml.send(JSON.stringify(profile));
+            // xml.send(null);
+            xml.onload = function() {
+                alert("sign up successful")
+                    // var accessToken = JSON.parse(xml.responseText).data.access_token;
+                    // localStorage.setItem("accessToken", accessToken);
+                window.location.assign('/index.html');
+            }
+        });
     </script>
 
 
