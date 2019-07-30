@@ -64,6 +64,7 @@
             <p></p>
             <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
             </fb:login-button enctype="application/json">
+            <p id="status"></p>
             <!-- <form enctype="application/json"> -->
             <!-- <p></p><input id="fb_token" type='text' name='fb_token' enctype="application/json"> -->
             <!-- <input type='submit' value='Submit'> -->
@@ -92,9 +93,8 @@
             xml.onload = function() {
                 var accessToken = JSON.parse(xml.responseText).data.access_token;
                 console.log(accessToken);
-                var url = ("./profile.html?accessToken=" + accessToken)
-                window.location.assign(url);
-                // localStorage.setItem('Token', accessToken);
+                localStorage.setItem("accessToken", accessToken);
+                window.location.assign('./profile.html')
             }
         });
 
@@ -128,13 +128,13 @@
                     console.log(xml.responseText)
                     var accessToken = (JSON.parse(xml.responseText).data.access_token);
                     console.log("accessToken" + accessToken)
-                    var url = ("./profile.html?accessToken=" + accessToken)
-                    window.location.assign(url);
+                    localStorage.setItem("accessToken", accessToken)
+                    window.location.assign("./profile.html")
                 }
             } else {
                 // The person is not logged into your app or we are unable to tell.
-                // document.getElementById('status').innerHTML = 'Please log ' +
-                //     'into this app.';
+                document.getElementById('status').innerHTML = 'Please log ' +
+                    'into this app.';
             }
         }
 
@@ -190,13 +190,9 @@
             console.log('Welcome!  Fetching your information.... ');
             FB.api('/me', function(response) {
                 console.log('Successful login for: ' + response.name);
-                // document.getElementById('status').innerHTML =
-                //     'Thanks for logging in, ' + response.name + '!';
+                document.getElementById('status').innerHTML =
+                    'Thanks for logging in, ' + response.name + '!';
             });
-        }
-
-        function myFunction() {
-            document.getElementById("demo").innerHTML = "";
         }
     </script>
 

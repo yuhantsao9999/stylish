@@ -252,37 +252,40 @@
 
                     console.log(result.card.prime);
                     var checkout = {
-                        prime: result.card.prime,
-                        order: {
-                            shipping: "delivery",
-                            payment: "credit_card",
-                            subtotal: 1234,
-                            freight: 14,
-                            total: 1300,
-                            recipient: {
-                                name: "yuhan",
-                                phone: "0987654321",
-                                email: "yuhan@yuhan",
-                                address: "市政府站",
-                                time: "morning"
-                            }
-                        },
-                        list: [{
-                            id: "201807202157",
-                            name: "活力花紋長筒牛仔褲",
-                            price: 1299,
-                            color: {
-                                code: "DDF0FF",
-                                name: "淺藍"
+                            prime: result.card.prime,
+                            order: {
+                                shipping: "delivery",
+                                payment: "credit_card",
+                                subtotal: 1234,
+                                freight: 14,
+                                total: 1300,
+                                recipient: {
+                                    name: "yuhan",
+                                    phone: "0987654321",
+                                    email: "yuhan@yuhan",
+                                    address: "市政府站",
+                                    time: "morning"
+                                }
                             },
-                            size: "M",
-                            qty: 1
-                        }]
-                    }
+                            list: [{
+                                id: "201807202157",
+                                name: "活力花紋長筒牛仔褲",
+                                price: 1299,
+                                color: {
+                                    code: "DDF0FF",
+                                    name: "淺藍"
+                                },
+                                size: "M",
+                                qty: 1
+                            }]
+                        }
+                        // const urlParams = new URLSearchParams(window.location.search);
+                        // const accessToken = urlParams.get('accessToken');
                     var xmlhttp = new XMLHttpRequest();
+                    accessToken = localStorage.getItem("accessToken")
                     xmlhttp.open("POST", "/order/checkout", true);
                     xmlhttp.setRequestHeader('Content-Type', 'application/json');
-                    xmlhttp.setRequestHeader("Authorization", "Bearer 5be5cd1f4d1fd703f3a4102815a99a9020feefc11ef153c91016d9358906a388");
+                    xmlhttp.setRequestHeader("Authorization", "Bearer " + accessToken);
                     xmlhttp.onload = function() {
                         var id = JSON.parse(xmlhttp.responseText).data.number[0].id;
                         console.log(JSON.parse(xmlhttp.responseText).data.number[0].id);
@@ -320,8 +323,8 @@
 
                     // document.getElementById("prime").value = result.card.prime;
                     // xmlhttp.send(result.card.prime);
-                    document.querySelector('#curl').innerHTML = command
-                        // xmlhttp.open("POST", "/order/checkout", false);
+                    // document.querySelector('#curl').innerHTML = command
+                    // xmlhttp.open("POST", "/order/checkout", false);
 
                 })
             })
