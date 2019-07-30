@@ -168,7 +168,7 @@ body {
     margin: 0 auto;
     display: block;
     /* padding: 150px 0; */
-    background-image: url(../img/event.png);
+    /*background-image: url('./Campaigns/0-1564474970647.jpg');*/
     /* background-size: auto; */
     /* -webkit-background-size: cover; */
     background-size: cover;
@@ -177,6 +177,7 @@ body {
 }
 
 .event .subtitle {
+    width: 45%;
     margin-left: 70px;
     color: #fff;
     font-weight: normal;
