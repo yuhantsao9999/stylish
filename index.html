@@ -47,7 +47,7 @@
             <div class=black></div>
             <div class="container">
                 <div class=title></div>
-                <div class="subtitle">for this summer only</div>
+                <div class="subtitle"></div>
             </div>
         </div>
         <div class="toptitle">
@@ -158,74 +158,71 @@
     xmlhttp.open("GET", "/api/1.0/products/all", true);
     xmlhttp.send(null);
     xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState == 4 && this.status == 200) {
 
-                var obj = JSON.parse(xmlhttp.responseText)
-                for (let i = 0; i < 6; i++) {
-                    console.log("what ?")
-                        //替換title
-                    var nameDiv = document.createElement("div");
-                    var nameContent = document.createTextNode(obj.Data[i].title);
-                    nameDiv.appendChild(nameContent);
-                    document.getElementsByClassName("row-item-description")[i].appendChild(nameDiv);
-                    //替換price
-                    var priceDiv = document.createElement("div");
-                    var priceContent = document.createTextNode("TWD." + obj.Data[i].price);
-                    priceDiv.appendChild(priceContent);
-                    document.getElementsByClassName("row-item-price")[i].appendChild(priceDiv);
-
-
-                    //建立一個a進行分頁連結
-                    var img_a = document.createElement("a");
-                    img_a.href = ("/product.html?id=" + obj.Data[i].id);
-                    console.log(img_a.href)
+            var obj = JSON.parse(xmlhttp.responseText)
+            for (let i = 0; i < 6; i++) {
+                console.log("what ?")
+                    //替換title
+                var nameDiv = document.createElement("div");
+                var nameContent = document.createTextNode(obj.Data[i].title);
+                nameDiv.appendChild(nameContent);
+                document.getElementsByClassName("row-item-description")[i].appendChild(nameDiv);
+                //替換price
+                var priceDiv = document.createElement("div");
+                var priceContent = document.createTextNode("TWD." + obj.Data[i].price);
+                priceDiv.appendChild(priceContent);
+                document.getElementsByClassName("row-item-price")[i].appendChild(priceDiv);
 
 
+                //建立一個a進行分頁連結
+                var img_a = document.createElement("a");
+                img_a.href = ("/product.html?id=" + obj.Data[i].id);
 
-                    //將圖片與連結加入picture
-                    var main_imageDiv = document.createElement("img");
-                    main_imageDiv.src = ("./porfuct_list_uploads/" + obj.Data[i].main_image);
-                    console.log(main_imageDiv.src)
-                    img_a.appendChild(main_imageDiv);
-                    document.getElementsByClassName("picture")[i].appendChild(img_a);
 
-                    //替換顏色
-                    let status = document.getElementsByClassName("rectangle-3")
-                    for (let j = 0; j < obj.Data[i].colors.length; j++) {
-                        console.log("i,j" + i + "," + j)
-                        let colorDiv = document.createElement("div");
-                        //幫新增的div賦予一個classname
-                        colorDiv.className = "rectangle-4"
-                        colorDiv.style.backgroundColor = ("#" + obj.Data[i].colors[j].code);
-                        status[i].appendChild(colorDiv)
-                        console.log("i : " + i + " " + colorDiv.style.backgroundColor)
-                    }
 
+
+
+                //將圖片與連結加入picture
+                var main_imageDiv = document.createElement("img");
+                main_imageDiv.src = ("./porfuct_list_uploads/" + obj.Data[i].main_image);
+                img_a.appendChild(main_imageDiv);
+                document.getElementsByClassName("picture")[i].appendChild(img_a);
+
+                //替換顏色
+                let status = document.getElementsByClassName("rectangle-3")
+                for (let j = 0; j < obj.Data[i].colors.length; j++) {
+                    let colorDiv = document.createElement("div");
+                    //幫新增的div賦予一個classname
+                    colorDiv.className = "rectangle-4"
+                    colorDiv.style.backgroundColor = ("#" + obj.Data[i].colors[j].code);
+                    status[i].appendChild(colorDiv)
+                    console.log("i : " + i + " " + colorDiv.style.backgroundColor)
+                }
+
+            }
+            var xmlhttp2 = new XMLHttpRequest();
+            xmlhttp2.open("GET", "api/1.0/marketing/campaigns", true);
+            xmlhttp2.send(null);
+            xmlhttp2.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    //story
+                    var obj = JSON.parse(xmlhttp2.responseText)
+
+                    var storyDiv = document.createElement("div");
+                    var storyContent = document.createTextNode(obj[0].story);
+                    storyDiv.appendChild(storyContent);
+                    document.getElementsByClassName("subtitle")[0].appendChild(storyDiv);
+
+                    //event
+
+                    var CampaignsContent = (obj[0].picture);
+                    console.log("picture_path" + " " + CampaignsContent)
+                    document.getElementsByClassName("event")[0].style.backgroundImage = "url(./Campaigns/" + CampaignsContent + ")";
                 }
             }
         }
-        // var xmlhttp2 = new XMLHttpRequest();
-        // xmlhttp2.open("GET", "api/1.0/marketing/campaigns", true);
-        // xmlhttp2.send(null);
-        // xmlhttp2.onreadystatechange = function() {
-        //     if (this.readyState == 4 && this.status == 200) {
-        //         //story
-        //         var obj = JSON.parse(xmlhttp2.responseText)
-        //         console.log("what ?")
-        //         console.log(obj)
-        //         var storyDiv = document.createElement("div");
-        //         var storyContent = document.createTextNode(obj[0].story);
-        //         storyDiv.appendChild(eventContent);
-        //         document.getElementsByClassName("subtitle")[0].appendChild(storyDiv);
-        //event
-        // var obj_event = JSON.parse(xmlhttp2.responseText)
-        // var eventDiv = document.createElement("div");
-        // var eventContent = document.createTextNode("url(" + obj[3].picture + ")");
-        // console.log(eventContent)
-        // eventDiv.appendChild(eventContent);
-        // document.getElementByID("event").style.backgroundImage = ("url('../uploads/Campaigns" + obj[3].picture + "')");
-        // }
-        // }
+    }
 </script>
 
 </html>
