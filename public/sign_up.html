@@ -76,12 +76,18 @@
                 }
                 // console.log(profile)
             xml.send(JSON.stringify(profile));
-            // xml.send(null);
             xml.onload = function() {
-                alert("sign up successful")
-                    // var accessToken = JSON.parse(xml.responseText).data.access_token;
-                    // localStorage.setItem("accessToken", accessToken);
-                window.location.assign('/index.html');
+                if (xml.responseText == "error") {
+                    console.log("duplicate")
+                    alert("Cannot repeat registration!please sign in!")
+                    window.location.assign('./sign_in.html')
+                } else {
+                    console.log("not duplicate")
+                    alert("sign up successful")
+                    var accessToken = JSON.parse(xml.responseText).data.access_token;
+                    localStorage.setItem("accessToken", accessToken);
+                    window.location.assign('/index.html');
+                }
             }
         });
     </script>
