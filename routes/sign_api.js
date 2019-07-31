@@ -69,7 +69,7 @@ router.post('/user/signup', function(req, res) {
     var sql3 = "SELECT email from user where email='" + email + "';"
     con.query(sql3, function(err, result3) {
         if (err) throw err;
-        if (String(result3).length == 0) {
+        if (result3.length == 0) {
             con.query(sql, user, function(err, result) {
                 if (err) throw err;
                 con.query(sql2, function(err, result2) {
@@ -83,7 +83,7 @@ router.post('/user/signup', function(req, res) {
                 });
             });
         } else {
-            res.send('"error": "Invalid token."')
+            res.send('error')
         }
     });
 });
