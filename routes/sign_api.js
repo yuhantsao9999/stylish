@@ -105,23 +105,34 @@ router.post('/user/signin', function(req, res) {
         var access_expired = Date.now() + 12000
         var sql5 = "UPDATE user SET access_token='" + token + "', access_expired  ='" + access_expired + "' WHERE email='" + email + "' and provider='native';"
         var mysql4 = "SELECT * from user where email='" + email + "';"
-        con.query(sql5, function(err, result5) {
+        con.query(mysql4, function(err, result4_1) {
             if (err) throw err;
-            con.query(mysql4, function(err, result4) {
-                if (err) throw err;
-                var sign_in = result4;
-                console.log("this is email " + sign_in[0]);
-                var access_token = sign_in[0].access_token
-                console.log(access_token);
-                console.log(token)
-                if (access_token == token) {
-                    array.push({ id: sign_in[0].id, provider: sign_in[0].provider, name: sign_in[0].name, email: sign_in[0].email, pricture: sign_in[0].picture });
-                    test['data'] = ({ access_token: sign_in[0].access_token, access_expired: sign_in[0].access_expired, user: array[0] });
-                    res.json(test);
-                } else {
-                    res.send('"error": "Invalid token."')
-                }
-            });
+            console.log(result4_1)
+            if (result4_1.length == 0) {
+                console.log('no this member');
+                console.log(req.body.email)
+                res.send("error")
+            } else {
+                con.query(sql5, function(err, result5) {
+                    if (err) throw err;
+                    con.query(mysql4, function(err, result4) {
+                        if (err) throw err;
+                        var sign_in = result4;
+                        console.log("this is email " + sign_in[0]);
+                        var access_token = sign_in[0].access_token
+                        console.log(access_token);
+                        console.log(token)
+                        if (access_token == token) {
+                            array.push({ id: sign_in[0].id, provider: sign_in[0].provider, name: sign_in[0].name, email: sign_in[0].email, pricture: sign_in[0].picture });
+                            test['data'] = ({ access_token: sign_in[0].access_token, access_expired: sign_in[0].access_expired, user: array[0] });
+                            res.json(test);
+                        } else {
+                            res.send('"error": "Invalid token."')
+                        }
+                    });
+                })
+
+            }
         })
     } else {
 
