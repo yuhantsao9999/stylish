@@ -1,5 +1,5 @@
 var express = require("express");
-var mysql = require('mysql');
+var con = require('../module/db');
 var multer = require('multer');
 const router = express.Router();
 var app = express();
@@ -13,22 +13,6 @@ app.use('/', router);
 // GET Champaigns.html
 router.get('/', (req, res) => {
     res.send('Campaigns');
-});
-
-// connect mysql
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "sweet840818",
-    database: "stylish",
-});
-
-con.connect(function(err) {
-    if (err) {
-        console.error(err);
-        return;
-    }
-    console.log("Mysql Connect campaigns");
 });
 
 //使用multer將檔案campaigns/傳到並幫檔案命名
@@ -59,7 +43,7 @@ router.post('/marketing/campaigns', upload.array('files'), function(req, res, ne
     var campaign_picture = req.files[0].filename;
     console.log(campaign_picture)
         //插入資料進myssql
-    var mysql = "INSERT INTO campaign (product_id,picture,story) Values('" + ID + "','" + campaign_picture + "','" + Story + "');";
+    var mysql = `INSERT INTO campaign (product_id,picture,story) Values('${ID}','${campaign_picture}','${Story}');`
     con.query(mysql, function(err, result) {
         if (err) throw err
         console.log('successful1')

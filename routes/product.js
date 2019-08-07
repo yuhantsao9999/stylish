@@ -1,5 +1,5 @@
 var express = require("express");
-var mysql = require('mysql');
+var con = require('../module/db');
 var multer = require('multer');
 const router = express.Router();
 var app = express();
@@ -12,22 +12,6 @@ router.get('/', (req, res) => {
     res.send('product');
 });
 
-
-// connect mysql
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "sweet840818",
-    database: "stylish",
-});
-
-con.connect(function(err) {
-    if (err) {
-        console.error(err);
-        return;
-    }
-    console.log("Mysql Connect product");
-});
 
 //使用multer將檔案campaigns/傳到並幫檔案命名
 var storage = multer.diskStorage({

@@ -1,5 +1,5 @@
 var express = require("express");
-var mysql = require("mysql");
+var con = require("../module/db.js");
 const router = express.Router();
 var app = express();
 const NodeCache = require("node-cache");
@@ -7,22 +7,6 @@ const Cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 
 // 從根目錄使用router
 app.use('/', router);
-
-// connect mysql
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "sweet840818",
-    database: "stylish",
-});
-
-con.connect(function(err) {
-    if (err) {
-        console.error(err);
-        return;
-    }
-    console.log("Mysql Connect product detail");
-});
 
 // detail api and add data in mysql
 router.get("/api/1.0/products/details", function(req, res) {

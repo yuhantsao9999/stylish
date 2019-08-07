@@ -1,26 +1,10 @@
 var express = require("express");
-var mysql = require("mysql");
+var con = require("../module/db");
 const router = express.Router();
 var app = express();
 
 // 從根目錄使用router
 app.use('/', router);
-
-// connect mysql
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "sweet840818",
-    database: "stylish",
-});
-
-con.connect(function(err) {
-    if (err) {
-        console.error(err);
-        return;
-    }
-    console.log("Mysql Connect product search");
-});
 
 // search api and add data in mysql
 router.get("/api/1.0/products/search", function(req, res) {
@@ -36,7 +20,6 @@ router.get("/api/1.0/products/search", function(req, res) {
         // console.log(data);
         var search_id = [];
         var array = [];
-        var variant = [];
         var variants = [];
         var colors = [];
         var test = {}; //創造test為一個物件
@@ -72,5 +55,3 @@ router.get("/api/1.0/products/search", function(req, res) {
     });
 });
 module.exports = router;
-
-

@@ -1,5 +1,5 @@
 var express = require("express");
-var mysql = require('mysql');
+var con = require('../module/db');
 var app = express();
 const router = express.Router();
 var request = require('request');
@@ -29,19 +29,6 @@ router.get('/', (req, res) => {
     res.send('profile');
 });
 
-//contect mysql
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "sweet840818",
-    database: "stylish"
-});
-
-con.connect(function(err) {
-    if (err) throw err;
-    console.log("Mysql Connect user");
-})
-
 //signup API
 router.post('/user/signup', function(req, res) {
     var name = req.body.name;
@@ -65,8 +52,8 @@ router.post('/user/signup', function(req, res) {
         // console.log(user)
         // console.log(user.access_expired)
     var sql = "INSERT INTO user SET ?"
-    var sql2 = "SELECT * from user where email='" + email + "';"
-    var sql3 = "SELECT email from user where email='" + email + "';"
+    var sql2 = `SELECT * from user where email='${email}';`
+    var sql3 = `SELECT email from user where email = '${email}';`
     con.query(sql3, function(err, result3) {
         if (err) throw err;
         if (result3.length == 0) {
@@ -92,8 +79,7 @@ router.post('/user/signup', function(req, res) {
 router.post('/user/signin', function(req, res) {
     if (req.body.provider == "native") {
         console.log("NATIVE~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        var name = req.body.name;
-        var email = req.body.email;
+        var { name, email } = req.body;
         var pwd = req.body.password;
         console.log(name + " " + email + " " + pwd)
         var test = {};
@@ -103,8 +89,14 @@ router.post('/user/signin', function(req, res) {
         var token = hash.digest('hex')
         console.log("this is token " + token)
         var access_expired = Date.now() + 12000
-        var sql5 = "UPDATE user SET access_token='" + token + "', access_expired  ='" + access_expired + "' WHERE email='" + email + "' and provider='native';"
-        var mysql4 = "SELECT * from user where email='" + email + "';"
+        var sql5 = `
+            UPDATE user SET access_token = '${token}', access_expired = '${access_expired}'
+            WHERE email = '${email}'
+            and provider = 'native';
+            `
+        var mysql4 = `
+            SELECT * from user where email = '${email}';
+            `
         con.query(mysql4, function(err, result4_1) {
             if (err) throw err;
             console.log(result4_1)
@@ -142,8 +134,7 @@ router.post('/user/signin', function(req, res) {
         request('https://graph.facebook.com/v3.3/me?&fields=name,email&access_token=' + token, (error, response, body) => {
             var profile = JSON.parse(body);
             console.log(profile)
-            var name = profile.name;
-            var email = profile.email
+            var { name, email } = profile;
             console.log(name)
             var test = {};
             var array = [];
@@ -161,9 +152,18 @@ router.post('/user/signin', function(req, res) {
             };
             var access_expired = Date.now() + 12000
             var fb_insert = "INSERT INTO user SET ?";
-            var fb_update = "UPDATE user SET access_token='" + mixtoken + "', access_expired  ='" + access_expired + "' WHERE email='" + email + "';"
-            var fb_repeat = "SELECT email from user where provider='facebook' and email='" + email + "';"
-            var fb_select = "SELECT * from user where provider='facebook' and name='" + name + "';"
+            var fb_update = `
+            UPDATE user SET access_token = '${mixtoken}', access_expired = '${access_expired}'
+            WHERE email = '${email}';
+            `
+            var fb_repeat = `
+            SELECT email from user where provider = 'facebook'
+            and email = '${email}';
+            `
+            var fb_select = `
+            SELECT * from user where provider = 'facebook'
+            and name = '${name}';
+            `
             con.query(fb_repeat, function(err, fb_repeat_result) {
                 if (err) throw err;
                 //若mysql內有沒有這筆臉書的emil資料，沒有則存取資料
@@ -215,7 +215,9 @@ router.get('/user/profile', function(req, res) {
     var Token = Bearer_token.substr(7, Bearer_token.length - 1);
     console.log("tokn : " + Token)
         //取出mysql中的token
-    var mysql5 = "SELECT * from user where access_token = '" + Token + "';"
+    var mysql5 = `
+            SELECT * from user where access_token = '${Token}';
+            `
     con.query(mysql5, function(err, result5) {
         if (err) throw err;
         var profile = result5;

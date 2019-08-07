@@ -1,5 +1,5 @@
 var express = require("express");
-var mysql = require('mysql');
+var con = require('../module/db');
 var app = express();
 const router = express.Router();
 var request = require('request');
@@ -12,26 +12,9 @@ router.use(bodyParser.json());
 // 從根目錄使用router
 app.use('/', router);
 
-
 // GET Champaigns.html
 router.get('/', (req, res) => {
     res.send('pay');
-});
-
-// connect mysql
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "sweet840818",
-    database: "stylish",
-});
-
-con.connect(function(err) {
-    if (err) {
-        console.error(err);
-        return;
-    }
-    console.log("Mysql Connect campaigns");
 });
 
 router.post('/order/checkout', function(req, res) {
@@ -105,8 +88,8 @@ router.post('/order/checkout', function(req, res) {
                         console.log(body)
                         if (body.status == 0) {
                             console.log("suc")
-                            var change_sql = "UPDATE list SET status='pay' WHERE prime='" + prime + "';"
-                            var id_sql = "SELECT id FROM list WHERE prime='" + prime + "';"
+                            var change_sql = `UPDATE list SET status='pay' WHERE prime='${prime}';`
+                            var id_sql = `SELECT id FROM list WHERE prime='${prime}';`
                             con.query(change_sql, function(err, change_result) {
                                 if (err) throw err;
                                 con.query(id_sql, function(err, id_result) {
