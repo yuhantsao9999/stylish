@@ -39,7 +39,6 @@ const checkout = require('./routes/checkout');
 app.use('/', checkout);
 
 
-
 app.get('/', (req, res) => {
     res.send('HEY!')
 })
