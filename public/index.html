@@ -18,11 +18,11 @@
             <div id="nav">
                 <ul class="clearfix">
                     <li class="boundary">
-                        <a href="#">女裝</a></li>
+                        <a href="#" onclick="req_women()">女裝</a></li>
                     <li class="boundary">
-                        <a href="#">男裝</a></li>
+                        <a href="#" onclick="req_men()">男裝</a></li>
                     <li>
-                        <a href="#">配件</a></li>
+                        <a href="#" onclick="req_acc()">配件</a></li>
                 </ul>
             </div>
             <div id="nav2">
@@ -159,11 +159,10 @@
     xmlhttp.send(null);
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-
             var obj = JSON.parse(xmlhttp.responseText)
             for (let i = 0; i < 6; i++) {
-                console.log("what ?")
-                    //替換title
+                // console.log("what ?")
+                //替換title
                 var nameDiv = document.createElement("div");
                 var nameContent = document.createTextNode(obj.Data[i].title);
                 nameDiv.appendChild(nameContent);
@@ -179,10 +178,6 @@
                 var img_a = document.createElement("a");
                 img_a.href = ("/product.html?id=" + obj.Data[i].id);
 
-
-
-
-
                 //將圖片與連結加入picture
                 var main_imageDiv = document.createElement("img");
                 main_imageDiv.src = ("./porfuct_list_uploads/" + obj.Data[i].main_image);
@@ -197,7 +192,7 @@
                     colorDiv.className = "rectangle-4"
                     colorDiv.style.backgroundColor = ("#" + obj.Data[i].colors[j].code);
                     status[i].appendChild(colorDiv)
-                    console.log("i : " + i + " " + colorDiv.style.backgroundColor)
+                        // console.log("i : " + i + " " + colorDiv.style.backgroundColor)
                 }
 
             }
@@ -208,16 +203,14 @@
                 if (this.readyState == 4 && this.status == 200) {
                     //story
                     var obj = JSON.parse(xmlhttp2.responseText)
-
                     var storyDiv = document.createElement("div");
                     var storyContent = document.createTextNode(obj[0].story);
                     storyDiv.appendChild(storyContent);
                     document.getElementsByClassName("subtitle")[0].appendChild(storyDiv);
 
                     //event
-
                     var CampaignsContent = (obj[0].picture);
-                    console.log("picture_path" + " " + CampaignsContent)
+                    // console.log("picture_path" + " " + CampaignsContent)
                     document.getElementsByClassName("event")[0].style.backgroundImage = "url(./Campaigns/" + CampaignsContent + ")";
                 }
             }
