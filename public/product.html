@@ -470,13 +470,13 @@
             document.getElementById("place").appendChild(placeDiv);
 
             //main_image
-            var main_image_src = ("./porfuct_list_uploads/" + obj_id.Data[0].main_image);
+            var main_image_src = ("https://stylish-test-1.s3-ap-northeast-1.amazonaws.com/porfuct_list_uploads/" + obj_id.Data[0].main_image);
             document.getElementsByClassName("main_image")[0].src = (main_image_src);
 
             //images
             var images = obj_id.Data[0].images.split(",")
-            images_src_2 = ("./porfuct_list_uploads/" + images[0]);
-            images_src_3 = ("./porfuct_list_uploads/" + images[1]);
+            images_src_2 = ("https://stylish-test-1.s3-ap-northeast-1.amazonaws.com/porfuct_list_uploads/" + images[0]);
+            images_src_3 = ("https://stylish-test-1.s3-ap-northeast-1.amazonaws.com/porfuct_list_uploads/" + images[1]);
             document.getElementById("picture_2").src = (images_src_2);
             document.getElementById("picture_3").src = (images_src_3);
 

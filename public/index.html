@@ -180,7 +180,7 @@
 
                 //將圖片與連結加入picture
                 var main_imageDiv = document.createElement("img");
-                main_imageDiv.src = ("./porfuct_list_uploads/" + obj.Data[i].main_image);
+                main_imageDiv.src = ("https://stylish-test-1.s3-ap-northeast-1.amazonaws.com/porfuct_list_uploads/" + obj.Data[i].main_image);
                 img_a.appendChild(main_imageDiv);
                 document.getElementsByClassName("picture")[i].appendChild(img_a);
 
@@ -211,7 +211,7 @@
                     //event
                     var CampaignsContent = (obj[0].picture);
                     // console.log("picture_path" + " " + CampaignsContent)
-                    document.getElementsByClassName("event")[0].style.backgroundImage = "url(./Campaigns/" + CampaignsContent + ")";
+                    document.getElementsByClassName("event")[0].style.backgroundImage = "url(https://stylish-test-1.s3-ap-northeast-1.amazonaws.com/" + CampaignsContent + ")";
                 }
             }
         }

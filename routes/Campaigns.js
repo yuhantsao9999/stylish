@@ -5,6 +5,21 @@ const router = express.Router();
 var app = express();
 const NodeCache = require("node-cache");
 const Cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
+var aws = require('aws-sdk');
+var multer = require('multer');
+var multerS3 = require('multer-s3');
+
+//s3的帳號密碼
+const BUCKET_NAME = 'stylish-test-1';
+const IAM_USER_KEY = 'AKIAWUNAWR5D2K6QYK4J';
+const IAM_USER_SECRET = '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';
+
+aws.config.update({
+    accessKeyId: IAM_USER_KEY,
+    secretAccessKey: IAM_USER_SECRET
+});
+const s3 = new aws.S3();
+
 
 // 從根目錄使用router
 app.use('/', router);
@@ -16,20 +31,36 @@ router.get('/', (req, res) => {
 });
 
 //使用multer將檔案campaigns/傳到並幫檔案命名
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, 'uploads/Campaigns')
-    },
-    filename: function(req, file, cb) {
-        cb(null, file.originalname + '-' + Date.now() + ".jpg");
+// var storage = multer.diskStorage({
+//     destination: function(req, file, cb) {
+//         cb(null, 'uploads/Campaigns')
+//     },
+//     filename: function(req, file, cb) {
+//         cb(null, file.originalname + '-' + Date.now() + ".jpg");
 
-    }
+//     }
 
+// })
+// var upload = multer({ storage: storage })   upload.array('files')
+
+
+//s3取代multer
+var upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'stylish-test-1',
+        metadata: function(req, file, cb) {
+            cb(null, { fieldName: file.fieldname });
+        },
+        key: function(req, file, cb) {
+            cb(null, 'Campaigns/' + file.fieldname + '-' + Date.now() + ".jpg")
+        }
+    })
 })
-var upload = multer({ storage: storage })
 
 //使前端提交請求給後端
 router.post('/marketing/campaigns', upload.array('files'), function(req, res, next) {
+    console.log(req.body)
     var ID = req.body.product_ID;
     var Story = req.body.story;
     const file = req.files;
@@ -40,7 +71,7 @@ router.post('/marketing/campaigns', upload.array('files'), function(req, res, ne
     }
     console.log(req.files)
         // const path = "\"" + file[0].path + "\"";
-    var campaign_picture = req.files[0].filename;
+    var campaign_picture = req.files[0].key;
     console.log(campaign_picture)
         //插入資料進myssql
     var mysql = `INSERT INTO campaign (product_id,picture,story) Values('${ID}','${campaign_picture}','${Story}');`

@@ -3,6 +3,7 @@ var con = require("../module/db.js");
 const router = express.Router();
 var app = express();
 
+
 // 從根目錄使用router
 app.use('/', router);
 
@@ -13,11 +14,6 @@ router.get("/api/1.0/products/all", function(req, res) {
     if (page == undefined) {
         page = 0;
     }
-    res.set("Access-Control-Allow-Origin", "*"); //可被任何人存取
-    res.set("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization"); //標頭檔
-    res.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS"); //用了哪些方式
-    res.set("Access-Control-Allow-Credentials", "true");
-    page = Number(page)
 
     var mysql = "SELECT id,title,description,price,texture,wash,place,note,story,sizes,main_image,images from product"
     con.query(mysql, function(err, result1) {

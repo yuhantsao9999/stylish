@@ -3,6 +3,20 @@ var con = require('../module/db');
 var multer = require('multer');
 const router = express.Router();
 var app = express();
+var aws = require('aws-sdk');
+var multer = require('multer');
+var multerS3 = require('multer-s3');
+
+//s3的帳號密碼
+const BUCKET_NAME = 'stylish-test-1';
+const IAM_USER_KEY = 'AKIAWUNAWR5D2K6QYK4J';
+const IAM_USER_SECRET = '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';
+
+aws.config.update({
+    accessKeyId: IAM_USER_KEY,
+    secretAccessKey: IAM_USER_SECRET
+});
+const s3 = new aws.S3();
 
 // 從根目錄使用router
 app.use('/', router);
@@ -14,15 +28,30 @@ router.get('/', (req, res) => {
 
 
 //使用multer將檔案campaigns/傳到並幫檔案命名
-var storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, 'uploads/porfuct_list_uploads')
-    },
-    filename: function(req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + ".jpg")
-    },
+// var storage = multer.diskStorage({
+//     destination: function(req, file, cb) {
+//         cb(null, 'uploads/porfuct_list_uploads')
+//     },
+//     filename: function(req, file, cb) {
+//         cb(null, file.fieldname + '-' + Date.now() + ".jpg")
+//     },
+// })
+// var upload = multer({ storage: storage })
+
+
+//s3取代multer
+var upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: 'stylish-test-1',
+        metadata: function(req, file, cb) {
+            cb(null, { fieldName: file.fieldname });
+        },
+        key: function(req, file, cb) {
+            cb(null, 'porfuct_list_uploads/' + file.fieldname + '-' + Date.now() + ".jpg")
+        }
+    })
 })
-var upload = multer({ storage: storage })
 
 //使前端提交請求給後端
 var mixupload = upload.fields([{ name: 'main_image', maxCount: 1 }, { name: 'images', maxCount: 4 }]);
@@ -49,11 +78,11 @@ router.post('/product', mixupload, function(req, res, next) {
     var Variants_stock = req.body.variants_stock;
     // var Variants = "{\"color_code\":" + Variants_color_code + ",\"size\":" + Variants_size + ",\"stock\":" + Variants_stock + "}";
     var Category = req.body.category;
-    var main_img_name = req.files.main_image[0].filename;
+    var main_img_name = req.files.main_image[0].key;
     var images_name = []
     for (let i = 0; i < req.files.images.length; i++) {
-        images_name.push(req.files.images[i].filename);
-        console.log(req.files.images[i].filename)
+        images_name.push(req.files.images[i].key);
+        console.log(req.files.images[i].key)
     }
     // console.log(req.files.main_image[0].filename)
 
