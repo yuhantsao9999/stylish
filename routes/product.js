@@ -8,9 +8,9 @@ var multer = require('multer');
 var multerS3 = require('multer-s3');
 
 //s3的帳號密碼
-const BUCKET_NAME = '';
-const IAM_USER_KEY = '';
-const IAM_USER_SECRET = '';
+const BUCKET_NAME = 'stylish-test-1';
+const IAM_USER_KEY = 'AKIAWUNAWR5D2K6QYK4J';
+const IAM_USER_SECRET = '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';
 
 aws.config.update({
     accessKeyId: IAM_USER_KEY,
