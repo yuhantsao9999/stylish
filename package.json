@@ -9,12 +9,16 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "aws-sdk": "^2.517.0",
     "body-parser": "^1.19.0",
     "crypo": "^0.1.4",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
     "init": "^0.1.2",
+    "multer-s3": "^2.9.0",
     "mysql": "^2.17.1",
+    "node-cache": "^4.2.1",
+    "request": "^2.88.0",
     "router": "^1.3.3",
     "sha256": "^0.2.0"
   }
